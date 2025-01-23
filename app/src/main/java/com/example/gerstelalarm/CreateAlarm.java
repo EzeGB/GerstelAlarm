@@ -29,10 +29,13 @@ public class CreateAlarm extends AppCompatActivity {
         ((EditText)findViewById(R.id.editTextText)).setText(name);
     }
 
+
     public void returnToMain (View view){
         Intent goBack = new Intent(this, MainActivity.class);
         String newName = ((EditText)findViewById(R.id.editTextText)).getText().toString();
         goBack.putExtra("AlarmName", newName);
+        Intent createAlarm = getIntent();
+        goBack.putExtra("ButtonId", createAlarm.getIntExtra("ButtonId", 0));
         startActivity(goBack);
     }
 }

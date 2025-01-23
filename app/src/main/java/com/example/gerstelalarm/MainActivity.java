@@ -27,8 +27,9 @@ public class MainActivity extends AppCompatActivity {
 
         Intent received = getIntent();
         String newName = received.getStringExtra("AlarmName");
+        int buttonId = received.getIntExtra("ButtonId", 0);
         if (newName!=null) {
-            ((Button) findViewById(R.id.button)).setText(newName);
+            ((Button) findViewById(buttonId)).setText(newName);
         }
     }
 
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         Intent createAlarm = new Intent(this, CreateAlarm.class);
         String name = ((Button)view).getText().toString();
         createAlarm.putExtra("AlarmName", name);
+        createAlarm.putExtra("ButtonId", view.getId());
         startActivity(createAlarm);
     }
 }
