@@ -7,12 +7,36 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
+
+    ActivityResultLauncher<Intent> createAlarmLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == 1){
+                        Intent info = result.getData();
+
+                        if (info != null){
+                            String newName = info.getStringExtra("AlarmName");
+                            int buttonId = info.getIntExtra("ButtonId", 0);
+                            if (newName!=null) {
+                                ((Button) findViewById(buttonId)).setText(newName);
+                            }
+                        }
+                    }
+                }
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,12 +49,8 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        Intent received = getIntent();
-        String newName = received.getStringExtra("AlarmName");
-        int buttonId = received.getIntExtra("ButtonId", 0);
-        if (newName!=null) {
-            ((Button) findViewById(buttonId)).setText(newName);
-        }
+//        Intent received = getIntent();
+
     }
 
     public void goToCreate (View view){
@@ -38,6 +58,6 @@ public class MainActivity extends AppCompatActivity {
         String name = ((Button)view).getText().toString();
         createAlarm.putExtra("AlarmName", name);
         createAlarm.putExtra("ButtonId", view.getId());
-        startActivity(createAlarm);
+        createAlarmLauncher.launch(createAlarm);
     }
 }
