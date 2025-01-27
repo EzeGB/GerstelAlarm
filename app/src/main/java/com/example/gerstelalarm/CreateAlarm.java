@@ -30,7 +30,7 @@ public class CreateAlarm extends AppCompatActivity {
     }
 
 
-    public void returnToMain (View view){
+    public void changeToMain(View view){
         Intent goBack = new Intent();
         String newName = ((EditText)findViewById(R.id.editTextText)).getText().toString();
         goBack.putExtra("AlarmName", newName);
@@ -41,6 +41,10 @@ public class CreateAlarm extends AppCompatActivity {
         finish();
 
 //        startActivity(goBack);
-
+    }
+    public void cancel (View view){
+        Intent goBack = new Intent();
+        setResult(0, goBack);
+        finish();
     }
 }
