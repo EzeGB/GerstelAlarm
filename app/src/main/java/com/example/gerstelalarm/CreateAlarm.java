@@ -37,10 +37,7 @@ public class CreateAlarm extends AppCompatActivity {
         Intent createAlarm = getIntent();
         goBack.putExtra("ButtonId", createAlarm.getIntExtra("ButtonId", 0));
         setResult(1, goBack);
-
         finish();
-
-//        startActivity(goBack);
     }
     public void cancel (View view){
         Intent goBack = new Intent();

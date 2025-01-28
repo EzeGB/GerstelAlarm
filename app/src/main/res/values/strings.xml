@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">GerstelAlarm</string>
+
+    <string-array name="alarm_slots_txt">
+        <item>Slot 1</item>
+        <item>Slot 2</item>
+        <item>Slot 3</item>
+        <item>Slot 4</item>
+        <item>Slot 5</item>
+        <item>Slot 6</item>
+        <item>Slot 7</item>
+        <item>Slot 8</item>
+        <item>Slot 9</item>
+        <item>Slot 10</item>
+    </string-array>
+
+    <string name="alarm_name">emptySlot</string>
 </resources>
