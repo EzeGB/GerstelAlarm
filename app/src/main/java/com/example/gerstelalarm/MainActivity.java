@@ -2,8 +2,6 @@ package com.example.gerstelalarm;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
@@ -20,9 +18,31 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AlarmRecyclerViewInterface{
 
     ArrayList<AlarmModel> alarmModels = new ArrayList<>();
+    Alarm_RecycleViewAdapter alarmAdapter;
+
+    ActivityResultLauncher<Intent> createAlarmLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == 1){
+                        Intent info = result.getData();
+
+                        if (info != null){
+                            String newName = info.getStringExtra("AlarmName");
+                            int position = info.getIntExtra("Position", 0);
+                            if (newName!=null) {
+                                alarmModels.get(position).setAlarmName(newName);
+                                alarmAdapter.notifyItemChanged(position);
+                            }
+                        }
+                    }
+                }
+            }
+    );
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,38 +57,10 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.alarmRecyclerView);
         setUpAlarmModels();
-        Alarm_RecycleViewAdapter alarmAdapter = new Alarm_RecycleViewAdapter(this, alarmModels);
+        alarmAdapter = new Alarm_RecycleViewAdapter(this, this, alarmModels);
         recyclerView.setAdapter(alarmAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
-
-    public void goToCreate (View view){
-        Intent createAlarm = new Intent(this, CreateAlarm.class);
-        String name = ((Button)view).getText().toString();
-        createAlarm.putExtra("AlarmName", name);
-        createAlarm.putExtra("ButtonId", view.getId());
-        createAlarmLauncher.launch(createAlarm);
-    }
-
-    ActivityResultLauncher<Intent> createAlarmLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == 1){
-                        Intent info = result.getData();
-
-                        if (info != null){
-                            String newName = info.getStringExtra("AlarmName");
-                            int buttonId = info.getIntExtra("ButtonId", 0);
-                            if (newName!=null) {
-                                ((Button) findViewById(buttonId)).setText(newName);
-                            }
-                        }
-                    }
-                }
-            }
-    );
 
     private void setUpAlarmModels (){
         String [] alarmNames = getResources().getStringArray(R.array.alarm_slots_txt);
@@ -76,5 +68,14 @@ public class MainActivity extends AppCompatActivity {
         for (int i=0; i<alarmNames.length;i++){
             alarmModels.add(new AlarmModel(alarmNames[i]));
         }
+    }
+
+    @Override
+    public void onAlarmClick(int position) {
+        Intent createAlarm = new Intent(this, CreateAlarm.class);
+        String name = alarmModels.get(position).getAlarmName();
+        createAlarm.putExtra("AlarmName", name);
+        createAlarm.putExtra("Position", position);
+        createAlarmLauncher.launch(createAlarm);
     }
 }

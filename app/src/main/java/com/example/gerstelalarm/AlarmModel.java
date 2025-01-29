@@ -10,4 +10,8 @@ public class AlarmModel {
     public String getAlarmName() {
         return alarmName;
     }
+
+    public void setAlarmName(String alarmName) {
+        this.alarmName = alarmName;
+    }
 }
