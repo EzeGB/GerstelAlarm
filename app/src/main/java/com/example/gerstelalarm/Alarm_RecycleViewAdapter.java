@@ -61,7 +61,7 @@ public class Alarm_RecycleViewAdapter extends RecyclerView.Adapter<Alarm_Recycle
                         int position = getAdapterPosition();
 
                         if (position!=RecyclerView.NO_POSITION){
-                            alarmRecyclerViewInterface.onAlarmClick(position);
+                            alarmRecyclerViewInterface.onAlarmClick(position, false);
                         }
                     }
                 }
