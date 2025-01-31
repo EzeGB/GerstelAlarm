@@ -1,7 +1,9 @@
 package com.example.gerstelalarm;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -17,11 +19,15 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.Gson;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements AlarmRecyclerViewInterface{
 
@@ -41,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
                             if (newName!=null) {
                                 alarmModels.get(position).setAlarmName(newName);
                                 alarmAdapter.notifyItemChanged(position);
-                                writeAlarmsToFile();
+                                writeAlarmsToFile(position);
                             }
                         }
                     }
@@ -62,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
                             if (newName!=null) {
                                 alarmModels.add(new AlarmModel(newName));
                                 alarmAdapter.notifyItemInserted(position);
-                                writeAlarmsToFile();
+                                writeAlarmsToFile(position);
                             }
                         }
                     }
@@ -89,20 +95,16 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
     }
 
     private void setUpAlarmModels (){
-        File path = getApplicationContext().getFilesDir();
-        File readNames = new File(path, "alarm_names");
-        byte[] content = new byte[(int)readNames.length()];
+        SharedPreferences sharedAlarmPreferences = getApplicationContext().getSharedPreferences("alarmPreferencez", MODE_PRIVATE);
+        Gson gsonNames =new Gson();
+        String jsonTextNames = sharedAlarmPreferences.getString("alarmName", null);
+        String[] alarmNames = gsonNames.fromJson(jsonTextNames,String[].class);
+        Log.d("some string", "Doesn reach");
 
-        try {
-            FileInputStream streamNames = new FileInputStream(readNames);
-            streamNames.read(content);
-            String [] alarmNames = new String[] {Arrays.toString(content)};
-
+        if (!(alarmNames==null)){
             for (int i=0; i<alarmNames.length;i++){
                 alarmModels.add(new AlarmModel(alarmNames[i]));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
@@ -127,31 +129,13 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
             onAlarmClick(alarmModels.size(), true);
         }
     }
-    public void writeAlarmsToFile(){
-        File path = getApplicationContext().getFilesDir();
-        try {
-            FileOutputStream writerNames = new FileOutputStream(new File(path, "alarm_names"));
-            for (int i=0; i<alarmModels.size();i++){
-                writerNames.write(alarmModels.get(i).getAlarmName().getBytes());
+    public void writeAlarmsToFile(int position){
+        SharedPreferences sharedAlarmPreferences = getApplicationContext().getSharedPreferences("alarmPreferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor= sharedAlarmPreferences.edit();
+        Gson gson = new Gson();
+        String jsonName = gson.toJson(alarmModels.get(position).getAlarmName());
+        editor.putString("alarmName", jsonName);
+        editor.apply();
 
-            }
-            writerNames.close();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
     }
-
-//    public void readFromFile(View view){
-//        File path = getApplicationContext().getFilesDir();
-//        File read = new File(path, "prueba");
-//        byte[] content = new byte[(int)read.length()];
-//
-//        try {
-//            FileInputStream stream = new FileInputStream(read);
-//            stream.read(content);
-//            ((TextView)findViewById(R.id.textView)).setText(new String(content));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 }
