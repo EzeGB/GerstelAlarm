@@ -2,7 +2,10 @@ package com.example.gerstelalarm;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
@@ -16,6 +19,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements AlarmRecyclerViewInterface{
@@ -60,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
         alarmAdapter = new Alarm_RecycleViewAdapter(this, this, alarmModels);
         recyclerView.setAdapter(alarmAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        readFromFile(findViewById(R.id.button3));
     }
 
     private void setUpAlarmModels (){
@@ -77,5 +84,31 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
         createAlarm.putExtra("AlarmName", name);
         createAlarm.putExtra("Position", position);
         createAlarmLauncher.launch(createAlarm);
+    }
+
+    public void writeToFile(View view){
+        String text = ((EditText)findViewById(R.id.editTextText2)).getText().toString();
+        File path = getApplicationContext().getFilesDir();
+        try {
+            FileOutputStream writer = new FileOutputStream(new File(path, "prueba"));
+            writer.write(text.getBytes());
+            writer.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void readFromFile(View view){
+        File path = getApplicationContext().getFilesDir();
+        File read = new File(path, "prueba");
+        byte[] content = new byte[(int)read.length()];
+
+        try {
+            FileInputStream stream = new FileInputStream(read);
+            stream.read(content);
+            ((TextView)findViewById(R.id.textView)).setText(new String(content));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
