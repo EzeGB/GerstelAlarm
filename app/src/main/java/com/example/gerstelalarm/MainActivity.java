@@ -3,9 +3,7 @@ package com.example.gerstelalarm;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
@@ -19,15 +17,11 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements AlarmRecyclerViewInterface{
 
@@ -47,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
                             if (newName!=null) {
                                 alarmModels.get(position).setAlarmName(newName);
                                 alarmAdapter.notifyItemChanged(position);
-                                writeAlarmsToFile(position);
+                                updateAlarmsInformation();
                             }
                         }
                     }
@@ -68,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
                             if (newName!=null) {
                                 alarmModels.add(new AlarmModel(newName));
                                 alarmAdapter.notifyItemInserted(position);
-                                writeAlarmsToFile(position);
+                                updateAlarmsInformation();
                             }
                         }
                     }
@@ -95,17 +89,24 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
     }
 
     private void setUpAlarmModels (){
-        SharedPreferences sharedAlarmPreferences = getApplicationContext().getSharedPreferences("alarmPreferencez", MODE_PRIVATE);
-        Gson gsonNames =new Gson();
-        String jsonTextNames = sharedAlarmPreferences.getString("alarmName", null);
-        String[] alarmNames = gsonNames.fromJson(jsonTextNames,String[].class);
-        Log.d("some string", "Doesn reach");
-
-        if (!(alarmNames==null)){
-            for (int i=0; i<alarmNames.length;i++){
-                alarmModels.add(new AlarmModel(alarmNames[i]));
-            }
+        SharedPreferences sharedAlarmPreferences = getApplicationContext().getSharedPreferences("alarmsPreferences", MODE_PRIVATE);
+        Gson gson =new Gson();
+        String json = sharedAlarmPreferences.getString("alarmData", null);
+        Type type = new TypeToken<ArrayList<AlarmModel>>(){
+        }.getType();
+        alarmModels=gson.fromJson(json,type);
+        if (alarmModels==null){
+            alarmModels=new ArrayList<AlarmModel>();
         }
+    }
+
+    public void updateAlarmsInformation(){
+        SharedPreferences sharedAlarmPreferences = getApplicationContext().getSharedPreferences("alarmsPreferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor= sharedAlarmPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(alarmModels);
+        editor.putString("alarmData", json);
+        editor.apply();
     }
 
     @Override
@@ -121,21 +122,11 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
         }
     }
 
-
     public void createAlarmClick (View view){
         if (alarmModels.isEmpty()){
             onAlarmClick(0, true);
         } else {
             onAlarmClick(alarmModels.size(), true);
         }
-    }
-    public void writeAlarmsToFile(int position){
-        SharedPreferences sharedAlarmPreferences = getApplicationContext().getSharedPreferences("alarmPreferences", MODE_PRIVATE);
-        SharedPreferences.Editor editor= sharedAlarmPreferences.edit();
-        Gson gson = new Gson();
-        String jsonName = gson.toJson(alarmModels.get(position).getAlarmName());
-        editor.putString("alarmName", jsonName);
-        editor.apply();
-
     }
 }
