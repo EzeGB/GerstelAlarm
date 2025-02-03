@@ -2,6 +2,7 @@ package com.example.gerstelalarm;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -12,6 +13,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class CreateAlarm extends AppCompatActivity {
+
+    EditText name, time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,9 +27,17 @@ public class CreateAlarm extends AppCompatActivity {
             return insets;
         });
 
+        name = findViewById(R.id.editTextAlarmName);
+        time = findViewById(R.id.editTextAlarmTime);
+
         Intent createAlarm = getIntent();
-        String name = createAlarm.getStringExtra("AlarmName");
-        ((EditText)findViewById(R.id.editTextText)).setText(name);
+        boolean create = createAlarm.getBooleanExtra("Create", false);
+        if (!create){
+            String currentName = createAlarm.getStringExtra("AlarmName");
+            name.setText(currentName);
+            String currentTime = createAlarm.getStringExtra("Time");
+            time.setText(currentTime);
+        }
     }
 
 
@@ -35,8 +46,10 @@ public class CreateAlarm extends AppCompatActivity {
         Intent createAlarm = getIntent();
         goBack.putExtra("Position", createAlarm.getIntExtra("Position", 0));
         goBack.putExtra("Create", createAlarm.getBooleanExtra("Create", false));
-        String newName = ((EditText)findViewById(R.id.editTextText)).getText().toString();
+        String newName = name.getText().toString();
         goBack.putExtra("AlarmName", newName);
+        String newTime = time.getText().toString();
+        goBack.putExtra("Time",newTime);
         setResult(1, goBack);
         finish();
     }

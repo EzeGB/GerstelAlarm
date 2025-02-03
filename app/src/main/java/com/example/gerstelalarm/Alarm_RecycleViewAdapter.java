@@ -37,6 +37,7 @@ public class Alarm_RecycleViewAdapter extends RecyclerView.Adapter<Alarm_Recycle
         //assign values to views
         //based on position of recycler
         holder.textView.setText(alarmModels.get(position).getAlarmName());
+        holder.textViewTime.setText(alarmModels.get(position).getAlarmTime());
     }
 
     @Override
@@ -49,17 +50,18 @@ public class Alarm_RecycleViewAdapter extends RecyclerView.Adapter<Alarm_Recycle
         //grabbing views from layout file
 
         TextView textView;
+        TextView textViewTime;
         public MyViewHolder(@NonNull View itemView, AlarmRecyclerViewInterface alarmRecyclerViewInterface) {
             super(itemView);
 
             textView = itemView.findViewById(R.id.textView2);
+            textViewTime = itemView.findViewById(R.id.textViewTime);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (alarmRecyclerViewInterface!=null){
                         int position = getAdapterPosition();
-
                         if (position!=RecyclerView.NO_POSITION){
                             alarmRecyclerViewInterface.onAlarmClick(position, false);
                         }

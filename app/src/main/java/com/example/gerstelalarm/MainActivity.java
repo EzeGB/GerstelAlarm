@@ -3,6 +3,7 @@ package com.example.gerstelalarm;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -39,11 +40,13 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
                             int position = info.getIntExtra("Position", 0);
                             boolean create = info.getBooleanExtra("Create", false);
                             String newName = info.getStringExtra("AlarmName");
+                            String newTime = info.getStringExtra("Time");
                             if (create) {
-                                alarmModels.add(new AlarmModel(newName));
+                                alarmModels.add(new AlarmModel(newName,newTime));
                                 alarmAdapter.notifyItemInserted(position);
                             } else {
                                 alarmModels.get(position).setAlarmName(newName);
+                                alarmModels.get(position).setAlarmTime(newTime);
                                 alarmAdapter.notifyItemChanged(position);
                             }
                             updateAlarmsInformation();
@@ -99,7 +102,9 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
         createAlarm.putExtra("Create", create);
         if (!create){
             String name = alarmModels.get(position).getAlarmName();
+            String time = alarmModels.get(position).getAlarmTime();
             createAlarm.putExtra("AlarmName", name);
+            createAlarm.putExtra("Time", time);
         }
         editAlarmLauncher.launch(createAlarm);
     }

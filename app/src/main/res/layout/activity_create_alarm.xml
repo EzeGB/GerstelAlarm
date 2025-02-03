@@ -7,24 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".CreateAlarm">
 
-    <TextClock
-        android:id="@+id/textClock2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="176dp"
-        android:layout_marginTop="164dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <EditText
-        android:id="@+id/editTextText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/editTextAlarmName"
+        android:layout_width="225dp"
+        android:layout_height="56dp"
         android:layout_marginStart="100dp"
         android:layout_marginTop="248dp"
         android:ems="10"
         android:inputType="text"
-        android:text="Name"
+        android:text="@string/alarm_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,22 +23,36 @@
         android:id="@+id/button5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="336dp"
         android:layout_marginEnd="72dp"
         android:onClick="changeToMain"
-        android:text="Change"
+        android:text="Save"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="76dp"
+        android:layout_marginTop="336dp"
+        android:layout_marginEnd="80dp"
         android:onClick="cancel"
         android:text="Cancel"
         app:layout_constraintEnd_toStartOf="@+id/button5"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextAlarmTime"
+        android:layout_width="362dp"
+        android:layout_height="94dp"
+        android:layout_marginTop="140dp"
+        android:layout_marginEnd="24dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text="@string/time"
+        android:textAlignment="center"
+        android:textSize="64dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

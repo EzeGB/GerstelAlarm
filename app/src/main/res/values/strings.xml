@@ -14,5 +14,6 @@
         <item>Slot 10</item>
     </string-array>
 
-    <string name="alarm_name">emptySlot</string>
+    <string name="alarm_name">Name</string>
+    <string name="time">00:00</string>
 </resources>
