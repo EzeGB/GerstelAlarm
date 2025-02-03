@@ -32,10 +32,11 @@ public class CreateAlarm extends AppCompatActivity {
 
     public void changeToMain(View view){
         Intent goBack = new Intent();
-        String newName = ((EditText)findViewById(R.id.editTextText)).getText().toString();
-        goBack.putExtra("AlarmName", newName);
         Intent createAlarm = getIntent();
         goBack.putExtra("Position", createAlarm.getIntExtra("Position", 0));
+        goBack.putExtra("Create", createAlarm.getBooleanExtra("Create", false));
+        String newName = ((EditText)findViewById(R.id.editTextText)).getText().toString();
+        goBack.putExtra("AlarmName", newName);
         setResult(1, goBack);
         finish();
     }

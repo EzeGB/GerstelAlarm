@@ -36,34 +36,17 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
                     if (result.getResultCode() == 1){
                         Intent info = result.getData();
                         if (info != null){
-                            String newName = info.getStringExtra("AlarmName");
                             int position = info.getIntExtra("Position", 0);
-                            if (newName!=null) {
-                                alarmModels.get(position).setAlarmName(newName);
-                                alarmAdapter.notifyItemChanged(position);
-                                updateAlarmsInformation();
-                            }
-                        }
-                    }
-                }
-            }
-    );
-
-    ActivityResultLauncher<Intent> createAlarmLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == 1){
-                        Intent info = result.getData();
-                        if (info != null){
+                            boolean create = info.getBooleanExtra("Create", false);
                             String newName = info.getStringExtra("AlarmName");
-                            int position = info.getIntExtra("Position", 0);
-                            if (newName!=null) {
+                            if (create) {
                                 alarmModels.add(new AlarmModel(newName));
                                 alarmAdapter.notifyItemInserted(position);
-                                updateAlarmsInformation();
+                            } else {
+                                alarmModels.get(position).setAlarmName(newName);
+                                alarmAdapter.notifyItemChanged(position);
                             }
+                            updateAlarmsInformation();
                         }
                     }
                 }
@@ -113,13 +96,12 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
     public void onAlarmClick(int position, boolean create) {
         Intent createAlarm = new Intent(this, CreateAlarm.class);
         createAlarm.putExtra("Position", position);
+        createAlarm.putExtra("Create", create);
         if (!create){
             String name = alarmModels.get(position).getAlarmName();
             createAlarm.putExtra("AlarmName", name);
-            editAlarmLauncher.launch(createAlarm);
-        } else {
-            createAlarmLauncher.launch(createAlarm);
         }
+        editAlarmLauncher.launch(createAlarm);
     }
 
     public void createAlarmClick (View view){
