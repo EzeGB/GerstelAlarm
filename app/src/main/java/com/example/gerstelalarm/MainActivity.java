@@ -109,6 +109,13 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
         editAlarmLauncher.launch(createAlarm);
     }
 
+    @Override
+    public void onAlarmLongClick(int position) {
+        alarmModels.remove(position);
+        alarmAdapter.notifyItemRemoved(position);
+        updateAlarmsInformation();
+    }
+
     public void createAlarmClick (View view){
         if (alarmModels.isEmpty()){
             onAlarmClick(0, true);

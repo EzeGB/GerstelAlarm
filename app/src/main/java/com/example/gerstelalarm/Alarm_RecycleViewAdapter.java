@@ -68,6 +68,19 @@ public class Alarm_RecycleViewAdapter extends RecyclerView.Adapter<Alarm_Recycle
                     }
                 }
             });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if (alarmRecyclerViewInterface!=null){
+                        int position = getAdapterPosition();
+                        if (position!=RecyclerView.NO_POSITION){
+                            alarmRecyclerViewInterface.onAlarmLongClick(position);
+                        }
+                    }
+                    return true;
+                }
+            });
         }
     }
 }
