@@ -1,10 +1,13 @@
 package com.example.gerstelalarm;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResult;
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
 
     ArrayList<AlarmModel> alarmModels = new ArrayList<>();
     Alarm_RecycleViewAdapter alarmAdapter;
+    Dialog eliminateAlarmDialog;
 
     ActivityResultLauncher<Intent> editAlarmLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -67,11 +71,8 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
             return insets;
         });
 
-        RecyclerView recyclerView = findViewById(R.id.alarmRecyclerView);
-        setUpAlarmModels();
-        alarmAdapter = new Alarm_RecycleViewAdapter(this, this, alarmModels);
-        recyclerView.setAdapter(alarmAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        setUpAlarmRecyclerView();
+        setUpEliminateAlarmDialog();
     }
 
     private void setUpAlarmModels (){
@@ -111,9 +112,26 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
 
     @Override
     public void onAlarmLongClick(int position) {
-        alarmModels.remove(position);
-        alarmAdapter.notifyItemRemoved(position);
-        updateAlarmsInformation();
+        eliminateAlarmDialog.show();
+        Button cancel = eliminateAlarmDialog.findViewById(R.id.buttonCancelEliminate);
+        Button eliminate = eliminateAlarmDialog.findViewById(R.id.buttonEliminate);
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                eliminateAlarmDialog.dismiss();
+            }
+        });
+
+        eliminate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alarmModels.remove(position);
+                alarmAdapter.notifyItemRemoved(position);
+                updateAlarmsInformation();
+                eliminateAlarmDialog.dismiss();
+            }
+        });
     }
 
     public void createAlarmClick (View view){
@@ -122,5 +140,19 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
         } else {
             onAlarmClick(alarmModels.size(), true);
         }
+    }
+
+    public void setUpAlarmRecyclerView(){
+        RecyclerView recyclerView = findViewById(R.id.alarmRecyclerView);
+        setUpAlarmModels();
+        alarmAdapter = new Alarm_RecycleViewAdapter(this, this, alarmModels);
+        recyclerView.setAdapter(alarmAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    public void setUpEliminateAlarmDialog(){
+        eliminateAlarmDialog = new Dialog(MainActivity.this);
+        eliminateAlarmDialog.setContentView(R.layout.dialog_box_eliminate_alarm);
+        eliminateAlarmDialog.setCancelable(false);
     }
 }
