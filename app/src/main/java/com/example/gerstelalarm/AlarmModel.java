@@ -1,12 +1,12 @@
 package com.example.gerstelalarm;
 
 public class AlarmModel {
-    String alarmName;
-    String alarmTime;
+    String alarmName, alarmHours, alarmMinutes;
 
-    public AlarmModel(String alarmName, String alarmTime) {
+    public AlarmModel(String alarmName, String alarmTime, String alarmMinutes) {
         this.alarmName = alarmName;
-        this.alarmTime = alarmTime;
+        this.alarmHours = alarmTime;
+        this.alarmMinutes = alarmMinutes;
     }
 
     public String getAlarmName() {
@@ -17,11 +17,25 @@ public class AlarmModel {
         this.alarmName = alarmName;
     }
 
-    public String getAlarmTime() {
-        return alarmTime;
+    public String getAlarmHours() {
+        return alarmHours;
     }
 
-    public void setAlarmTime(String alarmTime) {
-        this.alarmTime = alarmTime;
+    public void setAlarmHours(String alarmHours) {
+        this.alarmHours = alarmHours;
+    }
+
+    public String getAlarmMinutes() {
+        return alarmMinutes;
+    }
+
+    public void setAlarmMinutes(String alarmMinutes) {
+        this.alarmMinutes = alarmMinutes;
+    }
+
+    public void setAll(String alarmName, String alarmTime, String alarmMinutes) {
+        this.alarmName = alarmName;
+        this.alarmHours = alarmTime;
+        this.alarmMinutes = alarmMinutes;
     }
 }

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,8 +35,10 @@ public class Alarm_RecycleViewAdapter extends RecyclerView.Adapter<Alarm_Recycle
     public void onBindViewHolder(@NonNull Alarm_RecycleViewAdapter.MyViewHolder holder, int position) {
         //assign values to views
         //based on position of recycler
-        holder.textView.setText(alarmModels.get(position).getAlarmName());
-        holder.textViewTime.setText(alarmModels.get(position).getAlarmTime());
+        AlarmModel alarmModel = alarmModels.get(position);
+        holder.textViewName.setText(alarmModel.getAlarmName());
+        holder.textViewHours.setText(alarmModel.getAlarmHours());
+        holder.textViewMinutes.setText(alarmModel.getAlarmMinutes());
     }
 
     @Override
@@ -49,13 +50,13 @@ public class Alarm_RecycleViewAdapter extends RecyclerView.Adapter<Alarm_Recycle
     public static class MyViewHolder extends RecyclerView.ViewHolder{
         //grabbing views from layout file
 
-        TextView textView;
-        TextView textViewTime;
+        TextView textViewName, textViewHours, textViewMinutes;
         public MyViewHolder(@NonNull View itemView, AlarmRecyclerViewInterface alarmRecyclerViewInterface) {
             super(itemView);
 
-            textView = itemView.findViewById(R.id.textView2);
-            textViewTime = itemView.findViewById(R.id.textViewTime);
+            textViewName = itemView.findViewById(R.id.textViewName);
+            textViewHours = itemView.findViewById(R.id.textViewHours);
+            textViewMinutes = itemView.findViewById(R.id.textViewMinutes);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

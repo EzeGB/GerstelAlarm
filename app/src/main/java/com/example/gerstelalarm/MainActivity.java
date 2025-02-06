@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
@@ -44,13 +43,13 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
                             int position = info.getIntExtra("Position", 0);
                             boolean create = info.getBooleanExtra("Create", false);
                             String newName = info.getStringExtra("AlarmName");
-                            String newTime = info.getStringExtra("Time");
+                            String newHours = info.getStringExtra("Hours");
+                            String newMinutes = info.getStringExtra("Minutes");
                             if (create) {
-                                alarmModels.add(new AlarmModel(newName,newTime));
+                                alarmModels.add(new AlarmModel(newName, newHours, newMinutes));
                                 alarmAdapter.notifyItemInserted(position);
                             } else {
-                                alarmModels.get(position).setAlarmName(newName);
-                                alarmModels.get(position).setAlarmTime(newTime);
+                                alarmModels.get(position).setAll(newName,newHours,newMinutes);
                                 alarmAdapter.notifyItemChanged(position);
                             }
                             updateAlarmsInformation();
@@ -81,9 +80,10 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
         String json = sharedAlarmPreferences.getString("alarmData", null);
         Type type = new TypeToken<ArrayList<AlarmModel>>(){
         }.getType();
+        Log.d("Looking",json);
         alarmModels=gson.fromJson(json,type);
         if (alarmModels==null){
-            alarmModels=new ArrayList<AlarmModel>();
+            alarmModels=new ArrayList<>();
         }
     }
 
@@ -103,9 +103,11 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
         createAlarm.putExtra("Create", create);
         if (!create){
             String name = alarmModels.get(position).getAlarmName();
-            String time = alarmModels.get(position).getAlarmTime();
+            String hours = alarmModels.get(position).getAlarmHours();
+            String minutes = alarmModels.get(position).getAlarmMinutes();
             createAlarm.putExtra("AlarmName", name);
-            createAlarm.putExtra("Time", time);
+            createAlarm.putExtra("Hours", hours);
+            createAlarm.putExtra("Minutes", minutes);
         }
         editAlarmLauncher.launch(createAlarm);
     }

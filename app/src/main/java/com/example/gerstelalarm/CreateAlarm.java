@@ -2,7 +2,6 @@ package com.example.gerstelalarm;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -14,7 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class CreateAlarm extends AppCompatActivity {
 
-    EditText name, time;
+    EditText name, hours, minutes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,15 +27,18 @@ public class CreateAlarm extends AppCompatActivity {
         });
 
         name = findViewById(R.id.editTextAlarmName);
-        time = findViewById(R.id.editTextAlarmTime);
+        hours = findViewById(R.id.editTextHours);
+        minutes = findViewById(R.id.editTextMinutes);
 
         Intent createAlarm = getIntent();
         boolean create = createAlarm.getBooleanExtra("Create", false);
         if (!create){
             String currentName = createAlarm.getStringExtra("AlarmName");
+            String currentHours = createAlarm.getStringExtra("Hours");
+            String currentMinutes = createAlarm.getStringExtra("Minutes");
             name.setText(currentName);
-            String currentTime = createAlarm.getStringExtra("Time");
-            time.setText(currentTime);
+            hours.setText(currentHours);
+            minutes.setText(currentMinutes);
         }
     }
 
@@ -47,9 +49,11 @@ public class CreateAlarm extends AppCompatActivity {
         goBack.putExtra("Position", createAlarm.getIntExtra("Position", 0));
         goBack.putExtra("Create", createAlarm.getBooleanExtra("Create", false));
         String newName = name.getText().toString();
+        String newHours = hours.getText().toString();
+        String newMinutes = minutes.getText().toString();
         goBack.putExtra("AlarmName", newName);
-        String newTime = time.getText().toString();
-        goBack.putExtra("Time",newTime);
+        goBack.putExtra("Hours", newHours);
+        goBack.putExtra("Minutes", newMinutes);
         setResult(1, goBack);
         finish();
     }
