@@ -3,4 +3,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="purple">#673AB7</color>
+    <color name="falseish">#B1FF5722</color>
+    <color name="trueish">#A125B125</color>
 </resources>

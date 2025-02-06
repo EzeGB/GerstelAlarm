@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity implements AlarmRecyclerViewInterface{
 
@@ -105,9 +106,12 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
             String name = alarmModels.get(position).getAlarmName();
             String hours = alarmModels.get(position).getAlarmHours();
             String minutes = alarmModels.get(position).getAlarmMinutes();
+            boolean [] weekDays = new boolean[7];
+            Arrays.fill(weekDays,false);
             createAlarm.putExtra("AlarmName", name);
             createAlarm.putExtra("Hours", hours);
             createAlarm.putExtra("Minutes", minutes);
+            createAlarm.putExtra("WeekDays",weekDays);
         }
         editAlarmLauncher.launch(createAlarm);
     }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ToggleButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,9 +12,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.Arrays;
+
 public class CreateAlarm extends AppCompatActivity {
 
     EditText name, hours, minutes;
+    ToggleButton monday, tuesday, wednesday, thursday, friday, saturday, sunday;
+    boolean [] weekDays;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,17 +34,22 @@ public class CreateAlarm extends AppCompatActivity {
         name = findViewById(R.id.editTextAlarmName);
         hours = findViewById(R.id.editTextHours);
         minutes = findViewById(R.id.editTextMinutes);
+        initializeToggleButtons();
 
         Intent createAlarm = getIntent();
-        boolean create = createAlarm.getBooleanExtra("Create", false);
-        if (!create){
+        if (!createAlarm.getBooleanExtra("Create", false)){
             String currentName = createAlarm.getStringExtra("AlarmName");
             String currentHours = createAlarm.getStringExtra("Hours");
             String currentMinutes = createAlarm.getStringExtra("Minutes");
+            weekDays = createAlarm.getBooleanArrayExtra("WeekDays");
             name.setText(currentName);
             hours.setText(currentHours);
             minutes.setText(currentMinutes);
+        } else {
+            weekDays = new boolean[7];
+            Arrays.fill(weekDays, false);
         }
+        configureToggleButtons(weekDays);
     }
 
 
@@ -61,5 +71,25 @@ public class CreateAlarm extends AppCompatActivity {
         Intent goBack = new Intent();
         setResult(0, goBack);
         finish();
+    }
+
+    public void initializeToggleButtons(){
+        monday = findViewById(R.id.toggleButtonMonday);
+        tuesday = findViewById(R.id.toggleButtonTuesday);
+        wednesday = findViewById(R.id.toggleButtonWednesday);
+        thursday = findViewById(R.id.toggleButtonThursday);
+        friday = findViewById(R.id.toggleButtonFriday);
+        saturday = findViewById(R.id.toggleButtonSaturday);
+        sunday = findViewById(R.id.toggleButtonSunday);
+    }
+
+    public void configureToggleButtons(boolean[]weekDays){
+        monday.setChecked(weekDays[0]);
+        tuesday.setChecked(weekDays[1]);
+        wednesday.setChecked(weekDays[2]);
+        thursday.setChecked(weekDays[3]);
+        friday.setChecked(weekDays[4]);
+        saturday.setChecked(weekDays[5]);
+        sunday.setChecked(weekDays[6]);
     }
 }

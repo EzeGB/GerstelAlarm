@@ -39,8 +39,8 @@
 
     <TextView
         android:id="@+id/textViewName"
-        android:layout_width="26dp"
-        android:layout_height="136dp"
+        android:layout_width="27dp"
+        android:layout_height="117dp"
         android:text=":"
         android:textAlignment="center"
         android:textSize="100dp"
@@ -48,8 +48,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/editTextHours"
-        app:layout_constraintTop_toTopOf="@+id/editTextHours"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.107" />
 
     <EditText
         android:id="@+id/editTextAlarmName"
@@ -67,8 +67,8 @@
         android:id="@+id/button5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="336dp"
-        android:layout_marginEnd="72dp"
+        android:layout_marginTop="452dp"
+        android:layout_marginEnd="60dp"
         android:onClick="changeToMain"
         android:text="Save"
         app:layout_constraintEnd_toEndOf="parent"
@@ -78,11 +78,118 @@
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="336dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginTop="452dp"
+        android:layout_marginEnd="92dp"
         android:onClick="cancel"
         android:text="Cancel"
         app:layout_constraintEnd_toStartOf="@+id/button5"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="384dp"
+        android:layout_height="99dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.157"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.526">
+
+        <ToggleButton
+            android:id="@+id/toggleButtonMonday"
+            android:layout_width="54dp"
+            android:layout_height="97dp"
+            android:layout_marginStart="4dp"
+            android:text="Monday"
+            android:textOff="M"
+            android:textOn="M"
+            android:background="@drawable/my_btn_toggle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ToggleButton
+            android:id="@+id/toggleButtonSunday"
+            android:layout_width="53dp"
+            android:layout_height="97dp"
+            android:text="Sunday"
+            android:textOff="S"
+            android:textOn="S"
+            android:background="@drawable/my_btn_toggle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/toggleButtonSaturday"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ToggleButton
+            android:id="@+id/toggleButtonSaturday"
+            android:layout_width="54dp"
+            android:layout_height="97dp"
+            android:text="Saturday"
+            android:textOff="S"
+            android:textOn="S"
+            android:background="@drawable/my_btn_toggle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/toggleButtonFriday"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ToggleButton
+            android:id="@+id/toggleButtonFriday"
+            android:layout_width="52dp"
+            android:layout_height="97dp"
+            android:text="Friday"
+            android:textOff="F"
+            android:textOn="F"
+            android:background="@drawable/my_btn_toggle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/toggleButtonThursday"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ToggleButton
+            android:id="@+id/toggleButtonThursday"
+            android:layout_width="53dp"
+            android:layout_height="97dp"
+            android:text="Thursday"
+            android:textOff="T"
+            android:textOn="T"
+            android:background="@drawable/my_btn_toggle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/toggleButtonWednesday"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ToggleButton
+            android:id="@+id/toggleButtonWednesday"
+            android:layout_width="55dp"
+            android:layout_height="97dp"
+            android:text="Wednesday"
+            android:textOff="W"
+            android:textOn="W"
+            android:background="@drawable/my_btn_toggle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/toggleButtonTuesday"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <ToggleButton
+            android:id="@+id/toggleButtonTuesday"
+            android:layout_width="54dp"
+            android:layout_height="97dp"
+            android:text="Tuesday"
+            android:textOff="T"
+            android:textOn="T"
+            android:background="@drawable/my_btn_toggle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/toggleButtonMonday"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
