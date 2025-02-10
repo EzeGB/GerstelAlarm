@@ -54,8 +54,8 @@ public class CreateAlarm extends AppCompatActivity {
 
 
     public void changeToMain(View view){
-        Intent goBack = new Intent();
         Intent createAlarm = getIntent();
+        Intent goBack = new Intent();
         goBack.putExtra("Position", createAlarm.getIntExtra("Position", 0));
         goBack.putExtra("Create", createAlarm.getBooleanExtra("Create", false));
         String newName = name.getText().toString();

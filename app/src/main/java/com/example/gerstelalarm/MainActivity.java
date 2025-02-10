@@ -60,6 +60,15 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
             }
     );
 
+    ActivityResultLauncher<Intent> soundAlarmLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                }
+            }
+    );
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
             String hours = alarmModels.get(position).getAlarmHours();
             String minutes = alarmModels.get(position).getAlarmMinutes();
             boolean [] weekDays = new boolean[7];
-            Arrays.fill(weekDays,false);
+            Arrays.fill(weekDays,true);
             createAlarm.putExtra("AlarmName", name);
             createAlarm.putExtra("Hours", hours);
             createAlarm.putExtra("Minutes", minutes);
@@ -160,5 +169,11 @@ public class MainActivity extends AppCompatActivity implements AlarmRecyclerView
         eliminateAlarmDialog = new Dialog(MainActivity.this);
         eliminateAlarmDialog.setContentView(R.layout.dialog_box_eliminate_alarm);
         eliminateAlarmDialog.setCancelable(false);
+    }
+
+    public void turnOnAlarm(View view){
+        Intent reproduce = new Intent(this,SoundingNotification.class);
+        reproduce.putExtra("Name","NAMAE");
+        soundAlarmLauncher.launch(reproduce);
     }
 }
